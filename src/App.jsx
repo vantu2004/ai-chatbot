@@ -7,7 +7,7 @@ import { OpenAiAssistant } from "./assistants/openAi";
 import { Loader } from "./components/loader/Loader";
 
 function App() {
-  const assistant = new GoogleAiAssistant();
+  const assistant = new OpenAiAssistant();
   const [messages, setMessages] = React.useState([]);
   const [loading, setLoading] = React.useState(false);
 

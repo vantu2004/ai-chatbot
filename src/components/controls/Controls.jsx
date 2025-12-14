@@ -4,7 +4,15 @@ import styles from "./Controls.module.css";
 import TextareaAutosize from "react-textarea-autosize";
 
 export function Controls({ isDisabled = false, onSend }) {
+  const textAreaRef = React.useRef(null);
   const [content, setContent] = React.useState("");
+
+  // sau khi gửi tin xong và nhận response thì focus với textArea
+  React.useEffect(() => {
+    if (!isDisabled) {
+      textAreaRef.current.focus();
+    }
+  }, [isDisabled]);
 
   const handleChange = (e) => {
     setContent(e.target.value);
@@ -28,8 +36,9 @@ export function Controls({ isDisabled = false, onSend }) {
     <div className={styles.Controls}>
       <div className={styles.TextAreaContainer}>
         <TextareaAutosize
+          ref={textAreaRef}
           className={styles.TextArea}
-          mỉnRows={1}
+          minRows={1}
           maxRows={5}
           disabled={isDisabled}
           value={content}
