@@ -17,6 +17,19 @@ export class GoogleAiAssistant {
 
     return response.text;
   }
+
+  // đây là hàm generator, hàm có thể tạm dừng (pause) và chạy tiếp (resume)
+  async *sendMessageStream(message) {
+    const response = await ai.models.generateContentStream({
+      model: this.#MODEL,
+      contents: message,
+    });
+
+    for await (const chunk of response) {
+      // yield có tác dụng trả kết quả ra ngoài
+      yield chunk.text;
+    }
+  }
 }
 
 export default GoogleAiAssistant;

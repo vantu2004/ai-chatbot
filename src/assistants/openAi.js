@@ -20,4 +20,24 @@ export class OpenAiAssistant {
 
     return response.output_text;
   }
+
+  async *sendMessageStream(message) {
+    const stream = await client.responses.create({
+      model: this.#MODEL,
+      input: message,
+      stream: true,
+    });
+
+    for await (const event of stream) {
+      // chỉ lấy text delta
+      if (event.type === "response.output_text.delta") {
+        yield event.delta;
+      }
+
+      // optional: kết thúc
+      if (event.type === "response.completed") {
+        return;
+      }
+    }
+  }
 }

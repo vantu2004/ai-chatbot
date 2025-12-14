@@ -10,10 +10,21 @@ function App() {
   const assistant = new OpenAiAssistant();
   const [messages, setMessages] = React.useState([]);
   const [loading, setLoading] = React.useState(false);
+  const [isStreaming, setIsStreaming] = React.useState(false);
 
   const handleAddMessage = (message) => {
     setMessages((prevMessages) => [...prevMessages, message]);
   };
+
+  function handleUpdateLastMessage(content) {
+    setMessages((prevMessages) =>
+      prevMessages.map((message, index) =>
+        index === prevMessages.length - 1
+          ? { ...message, content: `${message.content}${content}` }
+          : message
+      )
+    );
+  }
 
   const handleSendMessage = async (message) => {
     setLoading(true);
@@ -21,14 +32,25 @@ function App() {
     handleAddMessage({ role: "user", content: message });
 
     try {
-      const response = await assistant.sendMessage(message);
+      const response = await assistant.sendMessageStream(message);
+      let isFirstChunk = false;
 
-      handleAddMessage({ role: "assistant", content: response });
+      for await (const chunk of response) {
+        if (!isFirstChunk) {
+          isFirstChunk = true;
+          setLoading(false);
+          setIsStreaming(true);
+          handleAddMessage({ role: "assistant", content: "" });
+        }
+
+        handleUpdateLastMessage(chunk);
+      }
     } catch (error) {
       handleAddMessage({ role: "system", content: "Something went wrong" });
+      setLoading(false);
       console.log(error);
     } finally {
-      setLoading(false);
+      setIsStreaming(false);
     }
   };
 
@@ -45,7 +67,10 @@ function App() {
         <Chat messages={messages} />
       </div>
 
-      <Controls isDisabled={loading} onSend={handleSendMessage} />
+      <Controls
+        isDisabled={loading || isStreaming}
+        onSend={handleSendMessage}
+      />
     </div>
   );
 }
