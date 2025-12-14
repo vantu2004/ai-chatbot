@@ -1,8 +1,9 @@
 import React from "react";
 import { Send } from "lucide-react";
 import styles from "./Controls.module.css";
+import TextareaAutosize from "react-textarea-autosize";
 
-export function Controls({ onSend }) {
+export function Controls({ isDisabled = false, onSend }) {
   const [content, setContent] = React.useState("");
 
   const handleChange = (e) => {
@@ -26,15 +27,22 @@ export function Controls({ onSend }) {
   return (
     <div className={styles.Controls}>
       <div className={styles.TextAreaContainer}>
-        <textarea
+        <TextareaAutosize
           className={styles.TextArea}
+          mỉnRows={1}
+          maxRows={5}
+          disabled={isDisabled}
           value={content}
           onChange={handleChange}
           placeholder="Message AI Chatbot"
           onKeyDown={handlePressEnter}
         />
       </div>
-      <button className={styles.Button} onClick={handleSend}>
+      <button
+        className={styles.Button}
+        disabled={isDisabled}
+        onClick={handleSend}
+      >
         <Send className={styles.icon} />
       </button>
     </div>
