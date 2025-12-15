@@ -1,33 +1,38 @@
 .Controls {
   width: 100%;
   display: flex;
-  align-items: center;
+  align-items: stretch; /* QUAN TRỌNG */
   gap: 8px;
 }
 
+/* Container bọc textarea */
 .TextAreaContainer {
-  flex-grow: 1;
-  padding: 8px 16px;
-  line-height: 0;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  padding: 8px;
   border-radius: 16px;
   background: light-dark(#ffffff, #212121);
 }
 
+/* Textarea */
 .TextArea {
+  flex: 1;
   width: 100%;
-  height: 100%;
   border: none;
   outline: none;
   resize: none;
-  background: light-dark(#ffffff, #212121);
+  background: transparent;
+  font: inherit;
 }
 
+/* Button gửi */
 .Button {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 36px;
-  height: 36px;
+  width: 50px;
+  height: 50px;
   border: none;
   border-radius: 50%;
   outline: none;
@@ -38,6 +43,7 @@
   fill: light-dark(#f3f3f3, #171717);
 }
 
+/* Disable state */
 .TextArea:disabled,
 .Button:disabled {
   opacity: 0.35;

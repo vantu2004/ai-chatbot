@@ -24,6 +24,11 @@
   border-radius: 16px;
   font-size: 14px;
 
+  &[data-role="system"] {
+    align-self: flex-start;
+    background: light-dark(#ffabab, #6d3030);
+  }
+
   &[data-role="user"] {
     align-self: flex-end;
     background: light-dark(#f3f3f3, #303030);

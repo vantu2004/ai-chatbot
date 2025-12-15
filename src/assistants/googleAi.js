@@ -20,14 +20,30 @@ export class GoogleAiAssistant {
 
   // đây là hàm generator, hàm có thể tạm dừng (pause) và chạy tiếp (resume)
   async *sendMessageStream(message) {
-    const response = await ai.models.generateContentStream({
-      model: this.#MODEL,
-      contents: message,
-    });
+    try {
+      const response = await ai.models.generateContentStream({
+        model: this.#MODEL,
+        contents: message,
+      });
 
-    for await (const chunk of response) {
-      // yield có tác dụng trả kết quả ra ngoài
-      yield chunk.text;
+      for await (const chunk of response) {
+        yield chunk.text ?? "";
+      }
+    } catch (err) {
+      console.error(err);
+
+      let message = "Gemini error";
+      if (err?.message) {
+        try {
+          const parsedError = JSON.parse(err.message);
+          const parsedMessage = JSON.parse(parsedError.error.message);
+          message = parsedMessage.error.message;
+        } catch (error) {
+          message = error.message;
+        }
+      }
+
+      throw message;
     }
   }
 }

@@ -4,10 +4,11 @@ import { Chat } from "./components/chat/Chat";
 import { Controls } from "./components/controls/Controls";
 import { GoogleAiAssistant } from "./assistants/googleAi";
 import { OpenAiAssistant } from "./assistants/openAi";
+import { DeepseekAiAssistant } from "./assistants/deepseekAi";
 import { Loader } from "./components/loader/Loader";
 
 function App() {
-  const assistant = new OpenAiAssistant();
+  const assistant = new GoogleAiAssistant();
   const [messages, setMessages] = React.useState([]);
   const [loading, setLoading] = React.useState(false);
   const [isStreaming, setIsStreaming] = React.useState(false);
@@ -46,9 +47,12 @@ function App() {
         handleUpdateLastMessage(chunk);
       }
     } catch (error) {
-      handleAddMessage({ role: "system", content: "Something went wrong" });
+      handleAddMessage({
+        role: "system",
+        content: error || "Something went wrong",
+      });
       setLoading(false);
-      console.log(error);
+      console.error(error);
     } finally {
       setIsStreaming(false);
     }

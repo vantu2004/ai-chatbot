@@ -52,7 +52,12 @@ export function Controls({ isDisabled = false, onSend }) {
         disabled={isDisabled}
         onClick={handleSend}
       >
-        <Send className={styles.icon} />
+        <Send
+          size={32}
+          strokeWidth={0.5}
+          absoluteStrokeWidth
+          className={styles.icon}
+        />
       </button>
     </div>
   );
