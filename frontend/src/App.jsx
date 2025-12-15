@@ -4,11 +4,10 @@ import { Chat } from "./components/chat/Chat";
 import { Controls } from "./components/controls/Controls";
 import { GoogleAiAssistant } from "./assistants/googleAi";
 import { OpenAiAssistant } from "./assistants/openAi";
-import { DeepseekAiAssistant } from "./assistants/deepseekAi";
 import { Loader } from "./components/loader/Loader";
 
 function App() {
-  const assistant = new DeepseekAiAssistant();
+  const assistant = new OpenAiAssistant();
   const [messages, setMessages] = React.useState([]);
   const [loading, setLoading] = React.useState(false);
   const [isStreaming, setIsStreaming] = React.useState(false);
