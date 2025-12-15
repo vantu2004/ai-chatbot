@@ -8,7 +8,7 @@ import { DeepseekAiAssistant } from "./assistants/deepseekAi";
 import { Loader } from "./components/loader/Loader";
 
 function App() {
-  const assistant = new GoogleAiAssistant();
+  const assistant = new DeepseekAiAssistant();
   const [messages, setMessages] = React.useState([]);
   const [loading, setLoading] = React.useState(false);
   const [isStreaming, setIsStreaming] = React.useState(false);
